@@ -94,6 +94,8 @@ export default function App() {
     "How important is this to your class? (Scale 1-5)"
   ]);
 
+  const isApiKeyMissing = !process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === "MY_GEMINI_API_KEY";
+
   const readyResponsesCount = responses.filter(r => r.status === 'ready').length;
   const needsAnalysis = readyResponsesCount > 0 && readyResponsesCount !== lastAnalyzedCount;
 
@@ -586,6 +588,18 @@ export default function App() {
           />
         </div>
       </header>
+
+      {isApiKeyMissing && (
+        <div className="bg-amber-50 border-b border-amber-200 px-6 py-3 flex items-center justify-center gap-3 text-amber-800 text-sm font-medium">
+          <div className="bg-amber-100 p-1.5 rounded-full">
+            <Loader2 size={16} className="text-amber-600" />
+          </div>
+          <p>
+            Gemini API Key is missing. Please add <span className="font-bold">GEMINI_API_KEY</span> to the 
+            <span className="bg-amber-100 px-1.5 py-0.5 rounded mx-1">Secrets</span> panel in AI Studio to enable AI features.
+          </p>
+        </div>
+      )}
 
       <main className="p-6">
         {viewMode === 'dashboard' ? (

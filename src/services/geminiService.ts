@@ -1,11 +1,18 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import mammoth from "mammoth";
 
-const apiKey = process.env.GEMINI_API_KEY;
+const getApiKey = () => {
+  const key = process.env.GEMINI_API_KEY;
+  if (key && key !== "MY_GEMINI_API_KEY" && key !== "") return key;
+  return "";
+};
+
+const apiKey = getApiKey();
 if (!apiKey) {
-  console.error("GEMINI_API_KEY is not defined in the environment. Please ensure it is set in the AI Studio Secrets panel.");
+  console.warn("GEMINI_API_KEY is missing or using placeholder. Please set it in the AI Studio Secrets panel.");
 }
-const ai = new GoogleGenAI({ apiKey: apiKey || "" });
+
+const ai = new GoogleGenAI({ apiKey: apiKey });
 
 export interface WorkshopResponse {
   id: string;
