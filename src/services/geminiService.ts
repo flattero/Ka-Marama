@@ -1,7 +1,11 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import mammoth from "mammoth";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+const apiKey = process.env.GEMINI_API_KEY;
+if (!apiKey) {
+  console.error("GEMINI_API_KEY is not defined in the environment. Please ensure it is set in the AI Studio Secrets panel.");
+}
+const ai = new GoogleGenAI({ apiKey: apiKey || "" });
 
 export interface WorkshopResponse {
   id: string;
