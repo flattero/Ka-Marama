@@ -1,0 +1,7 @@
+{
+  "name": "Ka Mārama",
+  "description": "Ka Mārama - It Will be Clear. Extract insights from workshop responses using AI-powered analysis.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
