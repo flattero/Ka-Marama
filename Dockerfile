@@ -1,23 +1,28 @@
-# Use the official Node.js 20 image as the base image
-FROM node:20-slim
-
-# Set the working directory in the container
+# Stage 1: Build
+FROM node:20-slim AS builder
 WORKDIR /app
-
-# Copy package.json and package-lock.json
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
-
-# Copy the rest of the application code
 COPY . .
-
-# Build the application
 RUN npm run build
+# Prune dev dependencies to save space and potentially memory
+RUN npm prune --production
 
-# Expose the port the app runs on
-EXPOSE 3000
+# Stage 2: Runtime
+FROM node:20-slim
+WORKDIR /app
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/server.js ./server.js
 
-# Start the application
-CMD ["npm", "start"]
+# Set environment variables
+ENV NODE_ENV=production
+# Cloud Run will override this, but it's a good default
+ENV PORT=8080
+
+# Expose the port (informational)
+EXPOSE 8080
+
+# Start the application directly with node
+CMD ["node", "server.js"]

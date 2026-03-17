@@ -3,3 +3,5 @@ dist
 server.js
 .env
 .git
+.gitignore
+Dockerfile
