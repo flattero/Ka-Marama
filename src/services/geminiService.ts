@@ -1,27 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import mammoth from "mammoth";
 
-const getApiKey = () => {
-  // Try process.env (Vite define)
-  let key = process.env.GEMINI_API_KEY;
-  
-  // Try import.meta.env (Vite default)
-  if (!key || key === "MY_GEMINI_API_KEY" || key === "") {
-    key = (import.meta.env.VITE_GEMINI_API_KEY as string);
-  }
-  
-  if (key && key !== "MY_GEMINI_API_KEY" && key !== "") return key;
-  return "";
-};
-
-const apiKey = getApiKey();
-if (!apiKey) {
-  console.warn("GEMINI_API_KEY is missing. Please set it in the AI Studio Secrets panel.");
-} else {
-  console.log("GEMINI_API_KEY detected (length: " + apiKey.length + ")");
-}
-
-const ai = new GoogleGenAI({ apiKey: apiKey });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
 export interface WorkshopResponse {
   id: string;
