@@ -94,7 +94,8 @@ export default function App() {
     "How important is this to your class? (Scale 1-5)"
   ]);
 
-  const isApiKeyMissing = !process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === "MY_GEMINI_API_KEY";
+  const isApiKeyMissing = (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === "MY_GEMINI_API_KEY") &&
+    (!import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY === "MY_GEMINI_API_KEY");
 
   const readyResponsesCount = responses.filter(r => r.status === 'ready').length;
   const needsAnalysis = readyResponsesCount > 0 && readyResponsesCount !== lastAnalyzedCount;
