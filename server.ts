@@ -28,6 +28,14 @@ async function startServer() {
   };
 
   // API Endpoints
+  app.get('/api/status', (req, res) => {
+    const apiKey = getApiKey();
+    res.json({ 
+      isConfigured: !!apiKey,
+      message: apiKey ? 'API Key is configured.' : 'GEMINI_API_KEY is missing or invalid.'
+    });
+  });
+
   app.post('/api/extract-text', async (req, res) => {
     const { base64Data, mimeType } = req.body;
     const apiKey = getApiKey();
